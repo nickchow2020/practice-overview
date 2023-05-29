@@ -17,8 +17,8 @@ async function getCsvStudentData(path) {
 }
 
 async function combineStudentResult() {
-  const excelData1 = await getCsvStudentData("../data/practice1.csv");
-  const excelData2 = await getCsvStudentData("../data/practice2.csv");
+  const excelData1 = await getCsvStudentData("./practice1.csv");
+  const excelData2 = await getCsvStudentData("./practice2.csv");
   const firstFiftyRan1 = excelData1.slice(0, 50);
   const firstFiftyRan2 = excelData2.slice(0, 50);
   let result = [];
