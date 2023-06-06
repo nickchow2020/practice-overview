@@ -25,8 +25,10 @@ async function getCsvStudentData(path) {
 async function combineStudentResult() {
   const excelData1 = await getCsvStudentData("./practice1.csv");
   const excelData2 = await getCsvStudentData("./practice2.csv");
+  const excelData3 = await getCsvStudentData("./practice3.csv");
   const firstFiftyRan1 = excelData1.slice(0, 50);
   const firstFiftyRan2 = excelData2.slice(0, 50);
+  const firstFiftyRan3 = excelData3.slice(0, 50);
   let result = [];
 
   const studentNamesTopFifty = new Set();
@@ -39,19 +41,53 @@ async function combineStudentResult() {
     studentNamesTopFifty.add(student.name);
   }
 
+  for (let student of firstFiftyRan3) {
+    studentNamesTopFifty.add(student.name);
+  }
+
   for (let name of studentNamesTopFifty) {
     const firstMockPractice = excelData1.filter((obj) => obj.name === name)[0];
 
     const secondMockPractice = excelData2.filter((obj) => obj.name === name)[0];
+    const thirdMockPractice = excelData3.filter((obj) => obj.name === name)[0];
+
     const overViewScore = {
       name,
-      total: [firstMockPractice?.total, secondMockPractice?.total],
-      chinese: [firstMockPractice?.chinese, secondMockPractice?.chinese],
-      math: [firstMockPractice?.math, secondMockPractice?.math],
-      history: [firstMockPractice?.history, secondMockPractice?.history],
-      physics: [firstMockPractice?.physics, secondMockPractice?.physics],
-      chemical: [firstMockPractice?.chemical, secondMockPractice?.chemical],
-      morality: [firstMockPractice?.morality, secondMockPractice?.morality],
+      total: [
+        firstMockPractice?.total,
+        secondMockPractice?.total,
+        thirdMockPractice?.total,
+      ],
+      chinese: [
+        firstMockPractice?.chinese,
+        secondMockPractice?.chinese,
+        thirdMockPractice?.chinese,
+      ],
+      math: [
+        firstMockPractice?.math,
+        secondMockPractice?.math,
+        thirdMockPractice?.math,
+      ],
+      history: [
+        firstMockPractice?.history,
+        secondMockPractice?.history,
+        thirdMockPractice?.history,
+      ],
+      physics: [
+        firstMockPractice?.physics,
+        secondMockPractice?.physics,
+        thirdMockPractice?.physics,
+      ],
+      chemical: [
+        firstMockPractice?.chemical,
+        secondMockPractice?.chemical,
+        thirdMockPractice?.chemical,
+      ],
+      morality: [
+        firstMockPractice?.morality,
+        secondMockPractice?.morality,
+        thirdMockPractice?.morality,
+      ],
     };
 
     result.push(overViewScore);
@@ -110,6 +146,10 @@ const StudentDetailCompare = () => {
         .map((value) => value[1])
         .slice(2);
 
+      const studentScore3 = Object.values(targetStudent)
+        .map((value) => value[2])
+        .slice(2);
+
       const chartSeries = [
         {
           name: "模拟1",
@@ -119,6 +159,10 @@ const StudentDetailCompare = () => {
         {
           name: "模拟2",
           data: studentScore2,
+        },
+        {
+          name: "模拟3",
+          data: studentScore3,
         },
       ];
 

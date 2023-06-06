@@ -19,8 +19,11 @@ async function getCsvStudentData(path) {
 async function combineStudentResult() {
   const excelData1 = await getCsvStudentData("./practice1.csv");
   const excelData2 = await getCsvStudentData("./practice2.csv");
+  const excelData3 = await getCsvStudentData("./practice3.csv");
+
   const firstFiftyRan1 = excelData1.slice(0, 50);
   const firstFiftyRan2 = excelData2.slice(0, 50);
+  const firstFiftyRan3 = excelData3.slice(0, 50);
   let result = [];
 
   const studentNamesTopFifty = new Set();
@@ -33,14 +36,27 @@ async function combineStudentResult() {
     studentNamesTopFifty.add(student.name);
   }
 
+  for (let student of firstFiftyRan3) {
+    studentNamesTopFifty.add(student.name);
+  }
+
   for (let name of studentNamesTopFifty) {
     const firstMockPractice = excelData1.filter((obj) => obj.name === name)[0];
-
     const secondMockPractice = excelData2.filter((obj) => obj.name === name)[0];
+    const thirdMockPractice = excelData3.filter((obj) => obj.name === name)[0];
+
     const overViewScore = {
       name,
-      score: [firstMockPractice?.score, secondMockPractice?.score],
-      rank: [firstMockPractice?.rank, secondMockPractice?.rank],
+      score: [
+        firstMockPractice?.score,
+        secondMockPractice?.score,
+        thirdMockPractice?.score,
+      ],
+      rank: [
+        firstMockPractice?.rank,
+        secondMockPractice?.rank,
+        thirdMockPractice?.rank,
+      ],
     };
 
     result.push(overViewScore);
@@ -78,6 +94,7 @@ const GroupedBarChart = () => {
         },
       },
     },
+
     xaxis: {
       categories,
       labels: {
@@ -106,6 +123,7 @@ const GroupedBarChart = () => {
       const categories = data.map((item) => item.name);
       const mockOneScore = data.map((item) => item.score[0]);
       const mockTwoScore = data.map((item) => item.score[1]);
+      const mockThirdScore = data.map((item) => item.score[2]);
 
       const chartSeries = [
         {
@@ -116,6 +134,10 @@ const GroupedBarChart = () => {
         {
           name: "模拟2 总分",
           data: mockTwoScore,
+        },
+        {
+          name: "模拟3 总分",
+          data: mockThirdScore,
         },
       ];
 
@@ -131,7 +153,7 @@ const GroupedBarChart = () => {
       options={chartOptions}
       series={chartSeries}
       type="bar"
-      height={4500}
+      height={6800}
     />
   );
 };
